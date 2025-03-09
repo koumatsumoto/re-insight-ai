@@ -44,9 +44,7 @@ const getWeather = async (location: string) => {
   console.log("Getting weather for", location);
   const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1`;
   console.log("Geocoding URL:", geocodingUrl);
-  const geocodingResponse = await fetch(geocodingUrl, {
-  
-  });
+  const geocodingResponse = await fetch(geocodingUrl, {});
   const geocodingData = (await geocodingResponse.json()) as GeocodingResponse;
 
   if (!geocodingData.results?.[0]) {
