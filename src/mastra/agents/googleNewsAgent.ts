@@ -1,6 +1,6 @@
 import { openai } from "@ai-sdk/openai";
 import { Agent } from "@mastra/core/agent";
-import { googleNewsTool } from "../tools";
+import { googleNewsTool, geocodingTool } from "../tools";
 
 export const googleNewsAgent = new Agent({
   name: "Google News Agent",
@@ -19,5 +19,5 @@ export const googleNewsAgent = new Agent({
       ニュースを取得する際には、googleNewsTool を使用せよ。
 `,
   model: openai("gpt-4o-mini"),
-  tools: { googleNewsTool },
+  tools: { googleNewsTool, geocodingTool },
 });

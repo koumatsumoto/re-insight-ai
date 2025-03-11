@@ -1,8 +1,9 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { googleNewsTool } from "./googleNewsTool";
+import { geocodingTool } from "./geocodingTool";
 
-export { googleNewsTool };
+export { googleNewsTool, geocodingTool };
 
 interface GeocodingResponse {
   results: {
