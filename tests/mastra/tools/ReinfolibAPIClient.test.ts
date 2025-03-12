@@ -12,37 +12,41 @@ describe('ReinfolibAPIClient', () => {
   });
 
   it('should fetch and parse real estate data successfully', async () => {
-    const mockResponse = [
-      {
-        Type: "中古マンション等",
-        Region: "住宅地",
-        MunicipalityCode: "13101",
-        Prefecture: "東京都",
-        Municipality: "千代田区",
-        DistrictName: "大手町",
-        TradePrice: 50000000,
-        PricePerUnit: 2500000,
-        FloorPlan: "3LDK",
-        Area: 75.5,
-        UnitPrice: 662251,
-        LandShape: "ほぼ長方形",
-        Frontage: "10m以上",
-        TotalFloorArea: 85.5,
-        BuildingYear: "平成10年",
-        Structure: "ＳＲＣ",
-        Use: "住宅",
-        Purpose: "住宅",
-        Direction: "南",
-        Classification: "区道",
-        Breadth: "6m",
-        CityPlanning: "商業地域",
-        CoverageRatio: 80,
-        FloorAreaRatio: 500,
-        Period: "2024年第1四半期",
-        Renovation: "改装済",
-        Remarks: null
-      }
-    ];
+    const mockResponse = {
+      status: "OK",
+      data: [
+        {
+          PriceCategory: "成約価格情報",
+          Type: "中古マンション等",
+          Region: "",
+          MunicipalityCode: "13102",
+          Prefecture: "東京都",
+          Municipality: "中央区",
+          DistrictName: "日本橋",
+          TradePrice: "64000000",
+          PricePerUnit: "",
+          FloorPlan: "１ＬＤＫ",
+          Area: "45",
+          UnitPrice: "",
+          LandShape: "",
+          Frontage: "",
+          TotalFloorArea: "",
+          BuildingYear: "2004年",
+          Structure: "ＳＲＣ",
+          Use: "",
+          Purpose: "",
+          Direction: "",
+          Classification: "",
+          Breadth: "",
+          CityPlanning: "商業地域",
+          CoverageRatio: "",
+          FloorAreaRatio: "",
+          Period: "2023年第4四半期",
+          Renovation: "",
+          Remarks: ""
+        }
+      ]
+    };
 
     (global.fetch as any).mockResolvedValueOnce({
       ok: true,
@@ -76,8 +80,9 @@ describe('ReinfolibAPIClient', () => {
     expect(url).toContain('language=ja');
 
     expect(() => RealEstateResponseSchema.parse(result)).not.toThrow();
-    expect(result[0].Prefecture).toBe('東京都');
-    expect(result[0].Municipality).toBe('千代田区');
+    expect(result.status).toBe('OK');
+    expect(result.data[0].Prefecture).toBe('東京都');
+    expect(result.data[0].Municipality).toBe('中央区');
   });
 
   it('should handle API errors', async () => {
@@ -116,13 +121,15 @@ describe('ReinfolibAPIClient', () => {
   });
 
   it('should throw ZodError for invalid response format', async () => {
-    const invalidResponse = [{
-      // Missing required fields
-      Type: "中古マンション等",
-      // Region is missing
-      Prefecture: "東京都",
-      // Other required fields are missing
-    }];
+    const invalidResponse = {
+      status: "OK",
+      data: [{
+        // Missing required fields
+        Type: "中古マンション等",
+        Prefecture: "東京都"
+        // Other required fields are missing
+      }]
+    };
 
     (global.fetch as any).mockResolvedValueOnce({
       ok: true,

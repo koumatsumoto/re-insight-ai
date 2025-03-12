@@ -16,36 +16,40 @@ const RealEstateQueryParamsSchema = z.object({
 
 // レスポンスのスキーマ定義
 const RealEstateDataSchema = z.object({
+  PriceCategory: z.string(),
   Type: z.string(),
   Region: z.string(),
   MunicipalityCode: z.string(),
   Prefecture: z.string(),
   Municipality: z.string(),
   DistrictName: z.string(),
-  TradePrice: z.number(),
-  PricePerUnit: z.number().nullable(),
-  FloorPlan: z.string().nullable(),
-  Area: z.number().nullable(),
-  UnitPrice: z.number().nullable(),
-  LandShape: z.string().nullable(),
-  Frontage: z.string().nullable(),
-  TotalFloorArea: z.number().nullable(),
-  BuildingYear: z.string().nullable(),
-  Structure: z.string().nullable(),
-  Use: z.string().nullable(),
-  Purpose: z.string().nullable(),
-  Direction: z.string().nullable(),
-  Classification: z.string().nullable(),
-  Breadth: z.string().nullable(),
-  CityPlanning: z.string().nullable(),
-  CoverageRatio: z.number().nullable(),
-  FloorAreaRatio: z.number().nullable(),
+  TradePrice: z.string(),
+  PricePerUnit: z.string(),
+  FloorPlan: z.string(),
+  Area: z.string(),
+  UnitPrice: z.string(),
+  LandShape: z.string(),
+  Frontage: z.string(),
+  TotalFloorArea: z.string(),
+  BuildingYear: z.string(),
+  Structure: z.string(),
+  Use: z.string(),
+  Purpose: z.string(),
+  Direction: z.string(),
+  Classification: z.string(),
+  Breadth: z.string(),
+  CityPlanning: z.string(),
+  CoverageRatio: z.string(),
+  FloorAreaRatio: z.string(),
   Period: z.string(),
-  Renovation: z.string().nullable(),
-  Remarks: z.string().nullable(),
+  Renovation: z.string(),
+  Remarks: z.string()
 });
 
-const RealEstateResponseSchema = z.array(RealEstateDataSchema);
+const RealEstateResponseSchema = z.object({
+  status: z.string(),
+  data: z.array(RealEstateDataSchema)
+});
 
 export type RealEstateQueryParams = z.infer<typeof RealEstateQueryParamsSchema>;
 export type RealEstateData = z.infer<typeof RealEstateDataSchema>;
@@ -88,6 +92,7 @@ export class ReinfolibAPIClient {
     }
 
     const data = await response.json();
+    console.log('Response data:', JSON.stringify(data, null, 2));
     return RealEstateResponseSchema.parse(data);
   }
 }
