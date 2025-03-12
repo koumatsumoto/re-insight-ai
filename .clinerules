@@ -36,7 +36,7 @@
 
 - Conventional Commits の規約に従い、作業内容を簡潔に英語で表現せよ
   - 例: `feat: add new feature`
-- `git commit` する前には、ユーザーにメッセージが適切かレビューを依頼せよ
+- `git commit` する前には、メッセージが適切か必ず確認を取れ
 
 ### git diff
 
