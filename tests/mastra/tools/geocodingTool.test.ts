@@ -14,7 +14,7 @@ type WorkflowContext<T> = {
   getStepResult: () => any;
 } & T;
 
-vi.mock("../../../src/mastra/tools/GeocodingAPI", () => {
+vi.mock("../../../src/mastra/tools/GeocodingAPIClient", () => {
   return {
     GeocodingAPIClient: vi.fn().mockImplementation(() => ({
       searchAddress: vi.fn().mockResolvedValue({
@@ -72,7 +72,9 @@ describe("geocodingTool", () => {
     vi.clearAllMocks();
   });
 
-  const createMockContext = (address: string): WorkflowContext<{ address: string }> => ({
+  const createMockContext = (
+    address: string
+  ): WorkflowContext<{ address: string }> => ({
     address,
     steps: {},
     triggerData: {},
@@ -82,23 +84,25 @@ describe("geocodingTool", () => {
 
   it("should have correct id and description", () => {
     expect(geocodingTool.id).toBe("geocoding");
-    expect(geocodingTool.description).toBe("Convert an address to geographical coordinates");
+    expect(geocodingTool.description).toBe(
+      "Convert an address to geographical coordinates"
+    );
   });
 
   it("should throw error if API key is not set", async () => {
     delete process.env.GOOGLE_MAPS_API_KEY;
     const tool = geocodingTool as { execute: Function };
-    await expect(tool.execute({ 
-      context: createMockContext("Tokyo"),
-      suspend: async () => {},
-    })).rejects.toThrow(
-      "GOOGLE_MAPS_API_KEY environment variable is not set"
-    );
+    await expect(
+      tool.execute({
+        context: createMockContext("Tokyo"),
+        suspend: async () => {},
+      })
+    ).rejects.toThrow("GOOGLE_MAPS_API_KEY environment variable is not set");
   });
 
   it("should return geocoding result for valid address", async () => {
     const tool = geocodingTool as { execute: Function };
-    const result = (await tool.execute({ 
+    const result = (await tool.execute({
       context: createMockContext("Tokyo"),
       suspend: async () => {},
     })) as GeocodingResult;

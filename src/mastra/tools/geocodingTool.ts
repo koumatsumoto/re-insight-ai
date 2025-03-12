@@ -1,6 +1,6 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
-import { GeocodingAPIClient, GeocodingResultSchema } from "./GeocodingAPI";
+import { GeocodingAPIClient, GeocodingResultSchema } from "./GeocodingAPIClient";
 
 export const geocodingTool = createTool({
   id: "geocoding",

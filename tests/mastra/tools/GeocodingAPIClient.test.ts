@@ -1,4 +1,4 @@
-import { GeocodingAPIClient, GeocodingResultSchema } from '../../../src/mastra/tools/GeocodingAPI';
+import { GeocodingAPIClient, GeocodingResultSchema } from '../../../src/mastra/tools/GeocodingAPIClient';
 import { ZodError } from 'zod';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
