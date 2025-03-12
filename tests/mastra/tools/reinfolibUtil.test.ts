@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { convertLatLonToTileXY } from '../../../src/mastra/tools/reinfolibTool';
+import { convertLatLonToTileXY } from '../../../src/mastra/tools/reinfolibUtil';
 
 describe('reinfolibTool', () => {
   describe('convertLatLonToTileXY', () => {
