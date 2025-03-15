@@ -1,16 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { getNews } from '../../../src/mastra/tools/googleNewsTool';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { getNews } from "../../../src/mastra/tools/googleNewsTool";
 
-describe('googleNewsTool', () => {
+describe("googleNewsTool", () => {
   beforeEach(() => {
     // Clear all mocks before each test
     vi.clearAllMocks();
-    
+
     // Reset fetch mock
     global.fetch = vi.fn();
   });
 
-  it('should fetch and parse news articles', async () => {
+  it("should fetch and parse news articles", async () => {
     const mockXmlResponse = `
       <rss version="2.0">
         <channel>
@@ -37,23 +37,23 @@ describe('googleNewsTool', () => {
       text: () => Promise.resolve(mockXmlResponse),
     });
 
-    const result = await getNews('test query', 2);
+    const result = await getNews("test query", 2);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('https://news.google.com/rss/search?q=test%20query')
+      expect.stringContaining("https://news.google.com/rss/search?q=test%20query"),
     );
 
     expect(result.articles).toHaveLength(2);
     expect(result.articles[0]).toEqual({
       title: 'Test Title "quoted"',
-      description: 'Test Description & more',
-      url: 'http://example.com/1',
-      source: 'Test Source',
-      publishedAt: 'Wed, 06 Mar 2024 12:00:00 GMT',
+      description: "Test Description & more",
+      url: "http://example.com/1",
+      source: "Test Source",
+      publishedAt: "Wed, 06 Mar 2024 12:00:00 GMT",
     });
   });
 
-  it('should respect the max parameter', async () => {
+  it("should respect the max parameter", async () => {
     const mockXmlResponse = `
       <rss version="2.0">
         <channel>
@@ -81,12 +81,12 @@ describe('googleNewsTool', () => {
       text: () => Promise.resolve(mockXmlResponse),
     });
 
-    const result = await getNews('test', 2);
+    const result = await getNews("test", 2);
 
     expect(result.articles).toHaveLength(2);
   });
 
-  it('should handle missing optional fields', async () => {
+  it("should handle missing optional fields", async () => {
     const mockXmlResponse = `
       <rss version="2.0">
         <channel>
@@ -103,33 +103,33 @@ describe('googleNewsTool', () => {
       text: () => Promise.resolve(mockXmlResponse),
     });
 
-    const result = await getNews('test');
+    const result = await getNews("test");
 
     expect(result.articles[0]).toEqual({
-      title: 'Test Title',
+      title: "Test Title",
       description: null,
-      url: 'http://example.com/1',
-      source: 'Google News',
-      publishedAt: '',
+      url: "http://example.com/1",
+      source: "Google News",
+      publishedAt: "",
     });
   });
 
-  it('should handle network errors', async () => {
-    (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+  it("should handle network errors", async () => {
+    (global.fetch as any).mockRejectedValueOnce(new Error("Network error"));
 
-    await expect(getNews('test')).rejects.toThrow('Network error');
+    await expect(getNews("test")).rejects.toThrow("Network error");
   });
 
-  it('should handle API errors', async () => {
+  it("should handle API errors", async () => {
     (global.fetch as any).mockResolvedValueOnce({
       ok: false,
-      statusText: 'Not Found',
+      statusText: "Not Found",
     });
 
-    await expect(getNews('test')).rejects.toThrow('Failed to fetch news: Not Found');
+    await expect(getNews("test")).rejects.toThrow("Failed to fetch news: Not Found");
   });
 
-  it('should handle empty response', async () => {
+  it("should handle empty response", async () => {
     const mockXmlResponse = `
       <rss version="2.0">
         <channel>
@@ -142,7 +142,7 @@ describe('googleNewsTool', () => {
       text: () => Promise.resolve(mockXmlResponse),
     });
 
-    const result = await getNews('test');
+    const result = await getNews("test");
 
     expect(result.articles).toHaveLength(0);
   });

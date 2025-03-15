@@ -31,7 +31,7 @@ const GeocodingResultSchema = z.object({
       geometry: GeometrySchema,
       place_id: z.string(),
       types: z.array(z.string()),
-    })
+    }),
   ),
   status: z.string(),
 });
@@ -48,7 +48,7 @@ export class GeocodingAPIClient {
 
   async searchAddress(address: string): Promise<GeocodingResult> {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${this.apiKey}`;
-    
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch geocoding data: ${response.statusText}`);

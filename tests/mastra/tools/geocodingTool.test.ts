@@ -72,9 +72,7 @@ describe("geocodingTool", () => {
     vi.clearAllMocks();
   });
 
-  const createMockContext = (
-    address: string
-  ): WorkflowContext<{ address: string }> => ({
+  const createMockContext = (address: string): WorkflowContext<{ address: string }> => ({
     address,
     steps: {},
     triggerData: {},
@@ -84,9 +82,7 @@ describe("geocodingTool", () => {
 
   it("should have correct id and description", () => {
     expect(geocodingTool.id).toBe("geocoding");
-    expect(geocodingTool.description).toBe(
-      "Convert an address to geographical coordinates"
-    );
+    expect(geocodingTool.description).toBe("Convert an address to geographical coordinates");
   });
 
   it("should throw error if API key is not set", async () => {
@@ -96,7 +92,7 @@ describe("geocodingTool", () => {
       tool.execute({
         context: createMockContext("Tokyo"),
         suspend: async () => {},
-      })
+      }),
     ).rejects.toThrow("GOOGLE_MAPS_API_KEY environment variable is not set");
   });
 

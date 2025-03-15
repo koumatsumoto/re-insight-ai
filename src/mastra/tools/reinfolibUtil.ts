@@ -10,17 +10,11 @@ type TileZoom = 15 | 16 | 17;
  * @param zoom
  * @returns
  */
-export function convertLatLonToTileXY(
-  lat: number,
-  lon: number,
-  zoom: TileZoom
-) {
+export function convertLatLonToTileXY(lat: number, lon: number, zoom: TileZoom) {
   const n = Math.pow(2, zoom);
   const latRad = radians(lat);
   const x = Math.floor(n * ((lon + 180) / 360));
-  const y = Math.floor(
-    (n * (1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI)) / 2
-  );
+  const y = Math.floor((n * (1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI)) / 2);
   return [x, y];
 }
 

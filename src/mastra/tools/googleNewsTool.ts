@@ -6,12 +6,7 @@ export const googleNewsTool = createTool({
   description: "Get latest news from Google News",
   inputSchema: z.object({
     query: z.string().describe("Search query"),
-    max: z
-      .number()
-      .min(1)
-      .max(10)
-      .default(5)
-      .describe("Maximum number of articles to return"),
+    max: z.number().min(1).max(10).default(5).describe("Maximum number of articles to return"),
   }),
   outputSchema: z.object({
     articles: z.array(
@@ -21,7 +16,7 @@ export const googleNewsTool = createTool({
         url: z.string(),
         source: z.string(),
         publishedAt: z.string(),
-      })
+      }),
     ),
   }),
   execute: async ({ context }) => {
@@ -56,17 +51,13 @@ export async function getNews(query: string, max: number = 5) {
 
   for (const item of itemMatches.slice(0, max)) {
     const title = item.match(/<title>(.*?)<\/title>/)?.[1] || "";
-    const description =
-      item.match(/<description>(.*?)<\/description>/)?.[1] || null;
+    const description = item.match(/<description>(.*?)<\/description>/)?.[1] || null;
     const url = item.match(/<link>(.*?)<\/link>/)?.[1] || "";
-    const source =
-      item.match(/<source.*?>(.*?)<\/source>/)?.[1] || "Google News";
+    const source = item.match(/<source.*?>(.*?)<\/source>/)?.[1] || "Google News";
     const publishedAt = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || "";
 
     const decodedTitle = decodeXMLEntities(title);
-    const decodedDescription = description
-      ? decodeXMLEntities(description)
-      : null;
+    const decodedDescription = description ? decodeXMLEntities(description) : null;
 
     articles.push({
       title: decodedTitle,

@@ -76,9 +76,7 @@ describe("reinfolibTool", () => {
     vi.clearAllMocks();
   });
 
-  const createMockContext = (
-    params: RealEstateContext
-  ): WorkflowContext<RealEstateContext> => ({
+  const createMockContext = (params: RealEstateContext): WorkflowContext<RealEstateContext> => ({
     ...params,
     steps: {},
     triggerData: {},
@@ -88,9 +86,7 @@ describe("reinfolibTool", () => {
 
   it("should have correct id and description", () => {
     expect(reinfolibTool.id).toBe("reinfolib");
-    expect(reinfolibTool.description).toBe(
-      "Search real estate transaction data from Real Estate Information Library"
-    );
+    expect(reinfolibTool.description).toBe("Search real estate transaction data from Real Estate Information Library");
   });
 
   it("should throw error if API key is not set", async () => {
@@ -106,7 +102,7 @@ describe("reinfolibTool", () => {
           language: "ja",
         }),
         suspend: async () => {},
-      })
+      }),
     ).rejects.toThrow("REINFOLIB_API_KEY environment variable is not set");
   });
 

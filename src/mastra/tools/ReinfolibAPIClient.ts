@@ -1,18 +1,40 @@
 import { z } from "zod";
 
 // パラメータのスキーマ定義
-const RealEstateQueryParamsSchema = z.object({
-  priceClassification: z.string().length(2).regex(/^\d{2}$/),
-  year: z.string().length(4).regex(/^\d{4}$/),
-  quarter: z.string().length(1).regex(/^[1-4]$/),
-  area: z.string().length(2).regex(/^\d{2}$/).optional(),
-  city: z.string().length(5).regex(/^\d{5}$/).optional(),
-  station: z.string().length(6).regex(/^\d{6}$/).optional(),
-  language: z.enum(["ja", "en"]),
-}).refine(
-  (data) => data.area !== undefined || data.city !== undefined || data.station !== undefined,
-  { message: "At least one of area, city, or station must be specified" }
-);
+const RealEstateQueryParamsSchema = z
+  .object({
+    priceClassification: z
+      .string()
+      .length(2)
+      .regex(/^\d{2}$/),
+    year: z
+      .string()
+      .length(4)
+      .regex(/^\d{4}$/),
+    quarter: z
+      .string()
+      .length(1)
+      .regex(/^[1-4]$/),
+    area: z
+      .string()
+      .length(2)
+      .regex(/^\d{2}$/)
+      .optional(),
+    city: z
+      .string()
+      .length(5)
+      .regex(/^\d{5}$/)
+      .optional(),
+    station: z
+      .string()
+      .length(6)
+      .regex(/^\d{6}$/)
+      .optional(),
+    language: z.enum(["ja", "en"]),
+  })
+  .refine((data) => data.area !== undefined || data.city !== undefined || data.station !== undefined, {
+    message: "At least one of area, city, or station must be specified",
+  });
 
 // レスポンスのスキーマ定義
 const RealEstateDataSchema = z.object({
@@ -43,12 +65,12 @@ const RealEstateDataSchema = z.object({
   FloorAreaRatio: z.string(),
   Period: z.string(),
   Renovation: z.string(),
-  Remarks: z.string()
+  Remarks: z.string(),
 });
 
 const RealEstateResponseSchema = z.object({
   status: z.string(),
-  data: z.array(RealEstateDataSchema)
+  data: z.array(RealEstateDataSchema),
 });
 
 export type RealEstateQueryParams = z.infer<typeof RealEstateQueryParamsSchema>;
@@ -92,7 +114,7 @@ export class ReinfolibAPIClient {
     }
 
     const data = await response.json();
-    console.log('Response data:', JSON.stringify(data, null, 2));
+    console.log("Response data:", JSON.stringify(data, null, 2));
     return RealEstateResponseSchema.parse(data);
   }
 }
